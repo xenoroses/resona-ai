@@ -1,22 +1,63 @@
 import React, { useState } from 'react';
-import { Radio, Sparkles, FileText, Globe, Cpu, ArrowRight, Zap } from 'lucide-react';
+import { Radio, Sparkles, FileText, Globe, Upload, CheckCircle2, ArrowRight, Zap, Link } from 'lucide-react';
+
+const AWS_WHITEPAPER_PRESETS = [
+  {
+    title: "AWS Well-Architected Framework",
+    url: "https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html",
+    category: "Architecture"
+  },
+  {
+    title: "Multi-Agent Systems on AWS Bedrock",
+    url: "https://aws.amazon.com/blogs/machine-learning/build-a-multi-agent-system-with-amazon-bedrock/",
+    category: "AI & ML"
+  },
+  {
+    title: "Serverless Multi-Region App Architecture",
+    url: "https://aws.amazon.com/blogs/architecture/serverless-multi-region-application-architecture/",
+    category: "Serverless"
+  },
+  {
+    title: "AWS Cloud Best Practices Whitepaper",
+    url: "https://d1.awsstatic.com/whitepapers/AWS_Cloud_Best_Practices.pdf",
+    category: "Whitepaper"
+  }
+];
 
 const SAMPLE_TOPICS = [
-  { title: "Agentic AI Engineering", desc: "Multi-agent systems using CrewAI, LangGraph, and Model Context Protocol (MCP)." },
-  { title: "AWS Cloud Architecture 2026", desc: "Serverless event-driven microservices, Bedrock LLM orchestrations, and DynamoDB." },
+  { title: "Agentic AI Engineering 2026", desc: "Multi-agent systems using CrewAI, LangGraph, and Model Context Protocol (MCP)." },
+  { title: "AWS Bedrock LLM Orchestration", desc: "Serverless event-driven microservices, Bedrock agents, and DynamoDB." },
   { title: "Quantum Machine Learning", desc: "Hybrid variational quantum-classical algorithms for cryptography and optimization." },
   { title: "Sub-100ms Low Latency Systems", desc: "Rust, WebRTC, and ONNX Runtime for real-time edge AI inference." }
 ];
 
 export default function StudioHub({ onGeneratePodcast, isGenerating }) {
   const [topicInput, setTopicInput] = useState('');
-  const [targetDuration, setTargetDuration] = useState('medium'); // 'short' | 'medium' | 'deep'
-  const [activeSourceType, setActiveSourceType] = useState('topic'); // 'topic' | 'url' | 'pdf'
+  const [targetDuration, setTargetDuration] = useState('medium');
+  const [activeSourceType, setActiveSourceType] = useState('topic'); // 'topic' | 'url' | 'file'
+  const [uploadedFileName, setUploadedFileName] = useState(null);
+  const [uploadedCharCount, setUploadedCharCount] = useState(0);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!topicInput.trim() || isGenerating) return;
     onGeneratePodcast(topicInput.trim(), targetDuration);
+  };
+
+  const handleFileUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploadedFileName(file.name);
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const content = event.target.result;
+      setTopicInput(content);
+      setUploadedCharCount(content.length);
+    };
+
+    reader.readAsText(file);
   };
 
   return (
@@ -31,7 +72,7 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
           Resona AI Podcast Studio
         </h2>
         <p className="text-sm text-[#A1A1AA] max-w-lg mx-auto leading-relaxed">
-          Transform any topic, technical paper, or raw text into an engaging, multi-agent dual-host podcast episode with dual-voice neural synthesis.
+          Transform any topic, AWS whitepaper URL, or uploaded document (.txt / .md / .pdf) into a studio-quality dual-host podcast episode.
         </p>
       </div>
 
@@ -61,52 +102,117 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
             }`}
           >
             <Globe className="w-3.5 h-3.5" />
-            <span>Web URL / Article</span>
+            <span>AWS Whitepaper / Article URL</span>
           </button>
 
           <button
-            onClick={() => setActiveSourceType('pdf')}
+            onClick={() => setActiveSourceType('file')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-              activeSourceType === 'pdf'
+              activeSourceType === 'file'
                 ? 'bg-[#18181B] text-[#D97757] border border-[#3F3F46]'
                 : 'text-[#A1A1AA] hover:text-[#F4F4F5]'
             }`}
           >
-            <FileText className="w-3.5 h-3.5" />
-            <span>Raw Text / Paper</span>
+            <Upload className="w-3.5 h-3.5" />
+            <span>Upload Document (.txt / .md / .pdf)</span>
           </button>
         </div>
 
         {/* Input Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-mono text-[#A1A1AA] mb-2 uppercase tracking-wider">
-              {activeSourceType === 'topic' ? 'Enter Topic or Title' : activeSourceType === 'url' ? 'Enter Article / Repository URL' : 'Paste Document / Abstract Text'}
-            </label>
-            
-            {activeSourceType === 'pdf' ? (
-              <textarea
-                value={topicInput}
-                onChange={(e) => setTopicInput(e.target.value)}
-                placeholder="Paste research paper abstract, document notes, or technical specifications here..."
-                rows={4}
-                disabled={isGenerating}
-                className="w-full bg-[#18181B] border border-[#3F3F46] rounded-xl p-3.5 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-[#D97757]"
-              />
-            ) : (
+          
+          {activeSourceType === 'file' ? (
+            <div className="space-y-3">
+              <label className="block text-xs font-mono text-[#A1A1AA] uppercase tracking-wider">
+                Upload File or Document Text
+              </label>
+              
+              {/* File Browser Box */}
+              <div className="border-2 border-dashed border-[#3F3F46] hover:border-[#D97757] rounded-xl p-6 text-center cursor-pointer transition-colors relative bg-[#18181B]">
+                <input
+                  type="file"
+                  accept=".txt,.md,.pdf,.doc,.docx,.json"
+                  onChange={handleFileUpload}
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                />
+                <Upload className="w-8 h-8 text-[#D97757] mx-auto mb-2" />
+                <span className="block text-xs font-bold text-[#F4F4F5]">
+                  Click to Browse or Drag & Drop Document
+                </span>
+                <span className="block text-[11px] text-[#A1A1AA] mt-1 font-mono">
+                  Supports .txt, .md, .pdf, .doc, .docx, .json files
+                </span>
+              </div>
+
+              {uploadedFileName && (
+                <div className="flex items-center space-x-2 text-xs font-mono bg-emerald-950/60 text-emerald-400 border border-emerald-800 p-2.5 rounded-xl">
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
+                  <span>File Loaded: <strong>{uploadedFileName}</strong> ({uploadedCharCount.toLocaleString()} characters)</span>
+                </div>
+              )}
+
+              {/* Text Preview Area */}
+              {topicInput && (
+                <div>
+                  <label className="block text-[11px] font-mono text-[#71717A] mb-1">
+                    Extracted Text Preview:
+                  </label>
+                  <textarea
+                    value={topicInput}
+                    onChange={(e) => setTopicInput(e.target.value)}
+                    rows={4}
+                    className="w-full bg-[#18181B] border border-[#3F3F46] rounded-xl p-3 text-xs text-[#F4F4F5] font-mono focus:outline-none focus:border-[#D97757]"
+                  />
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <label className="block text-xs font-mono text-[#A1A1AA] mb-2 uppercase tracking-wider">
+                {activeSourceType === 'topic' ? 'Enter Topic or Title' : 'Enter Article / AWS Whitepaper URL'}
+              </label>
+              
               <input
                 type="text"
                 value={topicInput}
                 onChange={(e) => setTopicInput(e.target.value)}
-                placeholder={activeSourceType === 'url' ? 'https://arxiv.org/abs/2401.12345 or https://github.com/...' : 'e.g. Multi-Agent Systems with CrewAI and LangGraph'}
+                placeholder={
+                  activeSourceType === 'url'
+                    ? 'https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html'
+                    : 'e.g. Multi-Agent AI Systems with CrewAI and LangGraph'
+                }
                 disabled={isGenerating}
                 className="w-full bg-[#18181B] border border-[#3F3F46] rounded-xl p-3.5 text-sm text-[#F4F4F5] placeholder-[#71717A] focus:outline-none focus:border-[#D97757]"
               />
-            )}
-          </div>
+            </div>
+          )}
 
-          {/* Target Podcast Length Selector */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2">
+          {/* Quick AWS Whitepaper Presets Bar (Shown when URL tab is active) */}
+          {activeSourceType === 'url' && (
+            <div className="pt-1 space-y-2">
+              <span className="text-[11px] font-mono text-[#A1A1AA] flex items-center gap-1">
+                <Link className="w-3 h-3 text-[#D97757]" /> Official AWS Whitepaper Test Links:
+              </span>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {AWS_WHITEPAPER_PRESETS.map((item, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setTopicInput(item.url)}
+                    className="text-left p-2.5 rounded-lg bg-[#18181B] hover:bg-[#3F3F46] border border-[#3F3F46] text-xs transition-all flex items-center justify-between"
+                  >
+                    <span className="font-semibold text-[#F4F4F5] truncate mr-2">{item.title}</span>
+                    <span className="text-[10px] font-mono text-[#D97757] shrink-0 font-bold px-1.5 py-0.5 rounded bg-[#27272A]">
+                      {item.category}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Target Length & Generate Button */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2 border-t border-[#3F3F46]/60">
             <div className="flex items-center space-x-2">
               <span className="text-xs text-[#A1A1AA] font-mono">Target Duration:</span>
               <div className="flex items-center space-x-1 bg-[#18181B] p-1 rounded-xl border border-[#3F3F46]">
@@ -146,14 +252,17 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
       {/* Preset Sample Topic Cards */}
       <div className="space-y-3">
         <h4 className="text-xs font-bold uppercase tracking-wider text-[#A1A1AA] font-mono flex items-center gap-1.5">
-          <Zap className="w-3.5 h-3.5 text-[#D97757]" /> Explore Sample Episodes
+          <Zap className="w-3.5 h-3.5 text-[#D97757]" /> Explore Sample Topics
         </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {SAMPLE_TOPICS.map((topic, idx) => (
             <button
               key={idx}
-              onClick={() => setTopicInput(topic.title)}
+              onClick={() => {
+                setActiveSourceType('topic');
+                setTopicInput(topic.title);
+              }}
               className="text-left p-4 rounded-xl bg-[#27272A] hover:bg-[#3F3F46]/80 border border-[#3F3F46]/60 transition-all group"
             >
               <h5 className="text-xs font-bold text-[#F4F4F5] group-hover:text-[#D97757] transition-colors mb-1">
