@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, Edit3, Volume2, Cpu, Sparkles, Sliders } from 'lucide-react';
+import { Radio, Edit3, Volume2, Cpu, Sparkles } from 'lucide-react';
 import StudioHub from './components/StudioHub.jsx';
 import ScriptEditor from './components/ScriptEditor.jsx';
 import AudioPlayerView from './components/AudioPlayerView.jsx';
@@ -79,32 +79,32 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0C131D] text-[#F0F9FF] font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#0F1117] text-[#F8FAFC] font-sans flex flex-col justify-between">
       
-      {/* Nordic Workstation Top Navbar */}
-      <header className="h-14 border-b border-[#222F43] bg-[#0C131D]/90 backdrop-blur-md px-4 md:px-6 flex items-center justify-between">
+      {/* Antigravity Header Navbar */}
+      <header className="h-14 border-b border-[#2B3042] bg-[#0F1117] px-4 md:px-6 flex items-center justify-between">
         
-        {/* Brand with Aquamarine Glow */}
+        {/* Antigravity Brand */}
         <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 rounded-xl bg-[#2DD4BF]/15 border border-[#2DD4BF]/40 flex items-center justify-center shadow-lg shadow-[#2DD4BF]/10">
-            <Radio className="w-4 h-4 text-[#2DD4BF]" />
+          <div className="w-8 h-8 rounded-lg bg-[#6366F1]/15 border border-[#6366F1]/40 flex items-center justify-center">
+            <Radio className="w-4 h-4 text-[#6366F1]" />
           </div>
           <div className="flex items-baseline space-x-2">
-            <h1 className="text-base font-bold tracking-tight text-[#F0F9FF]">Resona AI</h1>
-            <span className="text-[10px] font-mono text-[#2DD4BF] font-bold uppercase tracking-wider">
-              Audio Workstation
+            <h1 className="text-base font-bold tracking-tight text-[#F8FAFC]">Resona AI</h1>
+            <span className="text-[10px] font-mono text-[#6366F1] font-semibold bg-[#6366F1]/10 px-2 py-0.5 rounded border border-[#6366F1]/30">
+              v2.4
             </span>
           </div>
         </div>
 
-        {/* Center Tabs */}
-        <nav className="flex items-center space-x-1 bg-[#151F2C] p-1 rounded-xl border border-[#222F43]">
+        {/* Navigation Tabs */}
+        <nav className="flex items-center space-x-1 bg-[#1A1D27] p-1 rounded-xl border border-[#2B3042]">
           <button
             onClick={() => setActiveTab('hub')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'hub'
-                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#6366F1] text-white font-semibold shadow-md shadow-[#6366F1]/20'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#222634]'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -115,8 +115,8 @@ export default function App() {
             onClick={() => setActiveTab('editor')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'editor'
-                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#6366F1] text-white font-semibold shadow-md shadow-[#6366F1]/20'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#222634]'
             }`}
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -127,8 +127,8 @@ export default function App() {
             onClick={() => setActiveTab('player')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'player'
-                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#6366F1] text-white font-semibold shadow-md shadow-[#6366F1]/20'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#222634]'
             }`}
           >
             <Volume2 className="w-3.5 h-3.5" />
@@ -139,8 +139,8 @@ export default function App() {
             onClick={() => setActiveTab('telemetry')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'telemetry'
-                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#6366F1] text-white font-semibold shadow-md shadow-[#6366F1]/20'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC] hover:bg-[#222634]'
             }`}
           >
             <Cpu className="w-3.5 h-3.5" />
@@ -148,9 +148,9 @@ export default function App() {
           </button>
         </nav>
 
-        {/* Right Status */}
+        {/* Server Status Pill */}
         <div className="flex items-center space-x-2 text-xs font-mono text-[#94A3B8]">
-          <span className={`w-2 h-2 rounded-full ${isServerConnected ? 'bg-[#2DD4BF] animate-pulse' : 'bg-rose-500'}`} />
+          <span className={`w-2 h-2 rounded-full ${isServerConnected ? 'bg-emerald-500 animate-pulse' : 'bg-rose-500'}`} />
           <span className="hidden md:inline">{isServerConnected ? 'Engine Online' : 'Engine Offline'}</span>
         </div>
       </header>
@@ -182,8 +182,8 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#222F43] py-2.5 px-6 text-center text-xs font-mono text-[#94A3B8]">
-        Resona AI • Nordic Audio Workstation • Dual-Voice Neural Engine
+      <footer className="border-t border-[#2B3042] py-2.5 px-6 text-center text-xs font-mono text-[#64748B]">
+        Resona AI • Antigravity UI System • Python 3.13 + Node.js 24 + React 18
       </footer>
     </div>
   );

@@ -63,30 +63,30 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       
-      {/* Top Banner */}
-      <div className="nordic-card rounded-2xl p-8 text-center relative overflow-hidden">
-        <div className="w-16 h-16 rounded-2xl bg-[#2DD4BF]/15 border border-[#2DD4BF]/40 flex items-center justify-center mx-auto mb-4 shadow-xl">
-          <Radio className="w-8 h-8 text-[#2DD4BF]" />
+      {/* Top Banner Card */}
+      <div className="antigravity-card rounded-2xl p-8 text-center relative overflow-hidden">
+        <div className="w-16 h-16 rounded-2xl bg-[#6366F1]/15 border border-[#6366F1]/40 flex items-center justify-center mx-auto mb-4 shadow-xl shadow-[#6366F1]/10">
+          <Radio className="w-8 h-8 text-[#6366F1]" />
         </div>
-        <h2 className="text-2xl font-bold text-[#F0F9FF] mb-2 tracking-tight">
-          Resona Audio Workstation
+        <h2 className="text-2xl font-bold text-[#F8FAFC] mb-2 tracking-tight">
+          Resona AI Podcast Studio
         </h2>
         <p className="text-sm text-[#94A3B8] max-w-lg mx-auto leading-relaxed">
-          Transform topics, AWS whitepapers, or uploaded documents (.txt / .md / .pdf) into a dual-host podcast episode.
+          Transform topics, AWS whitepaper URLs, or uploaded documents (.txt / .md / .pdf) into a dual-host audio podcast episode.
         </p>
       </div>
 
-      {/* Main Source Ingestion Box */}
-      <div className="nordic-card rounded-2xl p-6 space-y-5">
+      {/* Main Ingestion Form */}
+      <div className="antigravity-card rounded-2xl p-6 space-y-5">
         
         {/* Source Type Tabs */}
-        <div className="flex items-center space-x-2 border-b border-[#222F43] pb-3">
+        <div className="flex items-center space-x-2 border-b border-[#2B3042] pb-3">
           <button
             onClick={() => setActiveSourceType('topic')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeSourceType === 'topic'
-                ? 'bg-[#0C131D] text-[#2DD4BF] border border-[#222F43]'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#0F1117] text-[#6366F1] border border-[#2B3042]'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC]'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -97,8 +97,8 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
             onClick={() => setActiveSourceType('url')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeSourceType === 'url'
-                ? 'bg-[#0C131D] text-[#2DD4BF] border border-[#222F43]'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#0F1117] text-[#6366F1] border border-[#2B3042]'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC]'
             }`}
           >
             <Globe className="w-3.5 h-3.5" />
@@ -109,8 +109,8 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
             onClick={() => setActiveSourceType('file')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
               activeSourceType === 'file'
-                ? 'bg-[#0C131D] text-[#2DD4BF] border border-[#222F43]'
-                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                ? 'bg-[#0F1117] text-[#6366F1] border border-[#2B3042]'
+                : 'text-[#94A3B8] hover:text-[#F8FAFC]'
             }`}
           >
             <Upload className="w-3.5 h-3.5" />
@@ -127,15 +127,15 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
                 Upload File or Document Text
               </label>
               
-              <div className="border-2 border-dashed border-[#222F43] hover:border-[#2DD4BF] rounded-xl p-6 text-center cursor-pointer transition-colors relative bg-[#0C131D]">
+              <div className="border-2 border-dashed border-[#2B3042] hover:border-[#6366F1] rounded-xl p-6 text-center cursor-pointer transition-colors relative bg-[#0F1117]">
                 <input
                   type="file"
                   accept=".txt,.md,.pdf,.doc,.docx,.json"
                   onChange={handleFileUpload}
                   className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
                 />
-                <Upload className="w-8 h-8 text-[#2DD4BF] mx-auto mb-2" />
-                <span className="block text-xs font-bold text-[#F0F9FF]">
+                <Upload className="w-8 h-8 text-[#6366F1] mx-auto mb-2" />
+                <span className="block text-xs font-bold text-[#F8FAFC]">
                   Click to Browse or Drag & Drop Document
                 </span>
                 <span className="block text-[11px] text-[#94A3B8] mt-1 font-mono">
@@ -159,7 +159,7 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
                     value={topicInput}
                     onChange={(e) => setTopicInput(e.target.value)}
                     rows={4}
-                    className="w-full bg-[#0C131D] border border-[#222F43] rounded-xl p-3 text-xs text-[#F0F9FF] font-mono focus:outline-none focus:border-[#2DD4BF]"
+                    className="w-full bg-[#0F1117] border border-[#2B3042] rounded-xl p-3 text-xs text-[#F8FAFC] font-mono focus:outline-none focus:border-[#6366F1]"
                   />
                 </div>
               )}
@@ -180,7 +180,7 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
                     : 'e.g. Multi-Agent AI Systems with CrewAI and LangGraph'
                 }
                 disabled={isGenerating}
-                className="w-full bg-[#0C131D] border border-[#222F43] rounded-xl p-3.5 text-sm text-[#F0F9FF] placeholder-[#94A3B8]/60 focus:outline-none focus:border-[#2DD4BF]"
+                className="w-full bg-[#0F1117] border border-[#2B3042] rounded-xl p-3.5 text-sm text-[#F8FAFC] placeholder-[#64748B] focus:outline-none focus:border-[#6366F1]"
               />
             </div>
           )}
@@ -188,7 +188,7 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
           {activeSourceType === 'url' && (
             <div className="pt-1 space-y-2">
               <span className="text-[11px] font-mono text-[#94A3B8] flex items-center gap-1">
-                <Link className="w-3 h-3 text-[#2DD4BF]" /> Official AWS Whitepaper Test Links:
+                <Link className="w-3 h-3 text-[#6366F1]" /> Official AWS Whitepaper Test Links:
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                 {AWS_WHITEPAPER_PRESETS.map((item, idx) => (
@@ -196,10 +196,10 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
                     key={idx}
                     type="button"
                     onClick={() => setTopicInput(item.url)}
-                    className="text-left p-2.5 rounded-lg bg-[#0C131D] hover:bg-[#1E2C3F] border border-[#222F43] text-xs transition-all flex items-center justify-between"
+                    className="text-left p-2.5 rounded-lg bg-[#0F1117] hover:bg-[#222634] border border-[#2B3042] text-xs transition-all flex items-center justify-between"
                   >
-                    <span className="font-semibold text-[#F0F9FF] truncate mr-2">{item.title}</span>
-                    <span className="text-[10px] font-mono text-[#2DD4BF] shrink-0 font-bold px-1.5 py-0.5 rounded bg-[#151F2C]">
+                    <span className="font-semibold text-[#F8FAFC] truncate mr-2">{item.title}</span>
+                    <span className="text-[10px] font-mono text-[#6366F1] shrink-0 font-bold px-1.5 py-0.5 rounded bg-[#1A1D27]">
                       {item.category}
                     </span>
                   </button>
@@ -208,10 +208,10 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
             </div>
           )}
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2 border-t border-[#222F43]">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pt-2 border-t border-[#2B3042]">
             <div className="flex items-center space-x-2">
               <span className="text-xs text-[#94A3B8] font-mono">Target Duration:</span>
-              <div className="flex items-center space-x-1 bg-[#0C131D] p-1 rounded-xl border border-[#222F43]">
+              <div className="flex items-center space-x-1 bg-[#0F1117] p-1 rounded-xl border border-[#2B3042]">
                 {[
                   { id: 'short', label: '⚡ 2-min Digest' },
                   { id: 'medium', label: '🎙️ 5-min Standard' },
@@ -223,8 +223,8 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
                     onClick={() => setTargetDuration(dur.id)}
                     className={`text-xs font-mono px-3 py-1 rounded-lg transition-colors ${
                       targetDuration === dur.id
-                        ? 'bg-[#2DD4BF] text-[#0C131D] font-bold shadow-md'
-                        : 'text-[#94A3B8] hover:text-[#F0F9FF]'
+                        ? 'bg-[#6366F1] text-white font-bold shadow-md shadow-[#6366F1]/20'
+                        : 'text-[#94A3B8] hover:text-[#F8FAFC]'
                     }`}
                   >
                     {dur.label}
@@ -236,7 +236,7 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
             <button
               type="submit"
               disabled={isGenerating || !topicInput.trim()}
-              className="px-6 py-3 rounded-xl bg-[#2DD4BF] hover:bg-[#38BDF8] text-[#0C131D] font-bold text-xs flex items-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-lg shadow-[#2DD4BF]/20 shrink-0"
+              className="px-6 py-3 rounded-xl bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-xs flex items-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed transition-all shadow-md shadow-[#6366F1]/20 shrink-0"
             >
               <span>{isGenerating ? 'Agents At Work...' : 'Generate Episode'}</span>
               <ArrowRight className="w-4 h-4" />
@@ -245,10 +245,10 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
         </form>
       </div>
 
-      {/* Preset Sample Topic Cards */}
+      {/* Preset Topic Cards */}
       <div className="space-y-3">
         <h4 className="text-xs font-bold uppercase tracking-wider text-[#94A3B8] font-mono flex items-center gap-1.5">
-          <Zap className="w-3.5 h-3.5 text-[#2DD4BF]" /> Explore Sample Topics
+          <Zap className="w-3.5 h-3.5 text-[#6366F1]" /> Explore Sample Topics
         </h4>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -259,9 +259,9 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
                 setActiveSourceType('topic');
                 setTopicInput(topic.title);
               }}
-              className="text-left p-4 rounded-xl bg-[#151F2C] hover:bg-[#1E2C3F] border border-[#222F43] transition-all group"
+              className="text-left p-4 rounded-xl bg-[#1A1D27] hover:bg-[#222634] border border-[#2B3042] transition-all group"
             >
-              <h5 className="text-xs font-bold text-[#F0F9FF] group-hover:text-[#2DD4BF] transition-colors mb-1">
+              <h5 className="text-xs font-bold text-[#F8FAFC] group-hover:text-[#6366F1] transition-colors mb-1">
                 {topic.title}
               </h5>
               <p className="text-[11px] text-[#94A3B8] leading-relaxed">

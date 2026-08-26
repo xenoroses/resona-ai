@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 body {
-  background-color: #0C131D;
-  color: #F0F9FF;
+  background-color: #0F1117;
+  color: #F8FAFC;
   font-family: 'Plus Jakarta Sans', sans-serif;
   overflow-x: hidden;
 }
@@ -15,36 +15,30 @@ body {
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0C131D;
+  background: #0F1117;
 }
 ::-webkit-scrollbar-thumb {
-  background: #151F2C;
+  background: #1A1D27;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #222F43;
+  background: #2B3042;
 }
 
-/* Nordic Audio Workstation Glass & Cards */
-.nordic-card {
-  background: rgba(21, 31, 44, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(56, 189, 248, 0.12);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+/* Antigravity Card Utilities */
+.antigravity-card {
+  background: #1A1D27;
+  border: 1px solid #2B3042;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
 }
 
-.nordic-input {
-  background: #0C131D;
-  border: 1px solid #222F43;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+.antigravity-input {
+  background: #0F1117;
+  border: 1px solid #2B3042;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.nordic-input:focus-within {
-  border-color: #2DD4BF;
-  box-shadow: 0 0 15px -3px rgba(45, 212, 191, 0.25);
-}
-
-.nordic-glow-aqua {
-  box-shadow: 0 0 25px -5px rgba(45, 212, 191, 0.3);
+.antigravity-input:focus-within {
+  border-color: #6366F1;
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
 }

@@ -11,15 +11,16 @@ export default {
         sans: ['Plus Jakarta Sans', 'sans-serif'],
       },
       colors: {
-        nordic: {
-          bg: '#0C131D',          // Deep Midnight Frost Navy
-          card: '#151F2C',        // Frosted Dark Slate surface
-          hover: '#1E2C3F',       // Hover state
-          border: '#222F43',      // Subtle icy border
-          aqua: '#2DD4BF',        // Soft Aquamarine / Seafoam
-          cyan: '#38BDF8',        // Sky Cyan
-          text: '#F0F9FF',        // Crisp Icy White
-          muted: '#94A3B8'
+        antigravity: {
+          bg: '#0F1117',          // Antigravity Deep Obsidian Slate
+          card: '#1A1D27',        // Surface Container Card
+          hover: '#222634',       // Hover / Selected surface
+          border: '#2B3042',      // Micro-border
+          indigo: '#6366F1',      // Antigravity Primary Electric Indigo
+          indigoSoft: '#818CF8',  // Soft Indigo highlight
+          text: '#F8FAFC',        // High-contrast text
+          subtext: '#94A3B8',     // Slate secondary text
+          muted: '#64748B'
         }
       }
     },
