@@ -71,7 +71,7 @@ class ResonaCrewEngine:
                         "content": extracted_content[:4000]
                     }
         except Exception as e:
-            print(f"[CrewEngine Warning] Web scraping failed for {url}: {e}")
+            print(f"[CrewEngine Warning] Web scraping failed for {url}: {e}", file=sys.stderr)
 
         return {
             "title": self._clean_topic_name(url),
@@ -98,7 +98,7 @@ class ResonaCrewEngine:
                 if res.status_code == 200:
                     return res.json()["choices"][0]["message"]["content"]
             except Exception as e:
-                print(f"[CrewEngine Warning] OpenRouter API call failed: {e}. Using intelligent template generator.")
+                print(f"[CrewEngine Warning] OpenRouter API call failed: {e}. Using intelligent template generator.", file=sys.stderr)
 
         return ""
 
@@ -149,7 +149,7 @@ class ResonaCrewEngine:
 
         # Check if topic_input is a URL
         if topic_input.strip().startswith("http://") or topic_input.strip().startswith("https://"):
-            print(f"[Resona Crew] Scraping web content from URL: {topic_input}")
+            print(f"[Resona Crew] Scraping web content from URL: {topic_input}", file=sys.stderr)
             article_data = self._fetch_url_content(topic_input.strip())
             clean_topic = article_data.get("title", clean_topic)
             content_snippet = article_data.get("content", "")
@@ -206,7 +206,7 @@ Please generate an engaging, highly informative 2-host dialogue script with 6 to
 
                 return parsed
             except Exception as e:
-                print(f"[CrewEngine Warning] Could not parse LLM output: {e}")
+                print(f"[CrewEngine Warning] Could not parse LLM output: {e}", file=sys.stderr)
 
         # Fallback if LLM fails or is offline
         return json.loads(self._generate_template_script(clean_topic, content_snippet))

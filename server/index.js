@@ -36,6 +36,14 @@ function runPythonCore(jsonInput) {
         return reject(error);
       }
       try {
+        // Robust JSON Extraction from stdout (ignores any stray debug logs)
+        const jsonStart = stdout.indexOf('{');
+        const jsonEnd = stdout.lastIndexOf('}');
+        if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+          const jsonString = stdout.substring(jsonStart, jsonEnd + 1);
+          const result = JSON.parse(jsonString);
+          return resolve(result);
+        }
         const result = JSON.parse(stdout);
         resolve(result);
       } catch (parseErr) {
@@ -110,7 +118,15 @@ app.post('/api/render-custom-script', async (req, res) => {
         return res.status(500).json({ error: 'Audio render failed', details: stderr || error.message });
       }
       try {
-        const audioMeta = JSON.parse(stdout);
+        const jsonStart = stdout.indexOf('{');
+        const jsonEnd = stdout.lastIndexOf('}');
+        let audioMeta;
+        if (jsonStart !== -1 && jsonEnd !== -1 && jsonEnd > jsonStart) {
+          audioMeta = JSON.parse(stdout.substring(jsonStart, jsonEnd + 1));
+        } else {
+          audioMeta = JSON.parse(stdout);
+        }
+
         const podcastRecord = {
           id: `podcast_custom_${Date.now()}`,
           topic: topic || 'Custom Script',
@@ -145,7 +161,7 @@ app.use((err, req, res, next) => {
   if (err.type === 'entity.too.large' || err.status === 413) {
     return res.status(413).json({
       error: 'Payload Too Large',
-      details: 'The uploaded file or pasted text exceeds maximum server payload limits. Please use a text snippet up to 50,000 characters.'
+      details: 'The uploaded file or pasted text exceeds maximum server payload limits.'
     });
   }
   next(err);
