@@ -18,9 +18,9 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 app.use(cors());
-// Expand JSON body limit to 50MB for handling large text documents and papers
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ limit: '50mb', extended: true }));
+// Set 100MB body parser limit for handling large document uploads & papers
+app.use(express.json({ limit: '100mb' }));
+app.use(express.urlencoded({ limit: '100mb', extended: true }));
 app.use('/outputs', express.static(outputsDir));
 
 // In-Memory Podcasts Library
@@ -30,7 +30,7 @@ let podcastLibrary = [];
 function runPythonCore(jsonInput) {
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(rootDir, 'engine', 'resona_core.py');
-    execFile('python', [scriptPath, '--json', jsonInput], { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
+    execFile('python', [scriptPath, '--json', jsonInput], { maxBuffer: 1024 * 1024 * 100 }, (error, stdout, stderr) => {
       if (error) {
         console.error('Python Core Error:', stderr || error.message);
         return reject(error);
@@ -74,8 +74,8 @@ app.post('/api/generate-podcast', async (req, res) => {
 
     const podcastRecord = {
       id: podcastId,
-      topic: result.topic || topic,
-      title: result.title || `Resona AI: ${topic}`,
+      topic: result.topic || topic.substring(0, 100),
+      title: result.title || `Resona AI: Podcast Episode`,
       researchSummary: result.research_summary || 'Multi-agent analysis completed.',
       dialogue: result.dialogue || [],
       audioUrl: audioUrl,
@@ -105,7 +105,7 @@ app.post('/api/render-custom-script', async (req, res) => {
     const filename = `resona_custom_${Date.now()}.mp3`;
     const jsonStr = JSON.stringify(dialogue);
 
-    execFile('python', [rendererScriptPath, '--json', jsonStr, '--output', filename], { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
+    execFile('python', [rendererScriptPath, '--json', jsonStr, '--output', filename], { maxBuffer: 1024 * 1024 * 100 }, (error, stdout, stderr) => {
       if (error) {
         return res.status(500).json({ error: 'Audio render failed', details: stderr || error.message });
       }
@@ -138,6 +138,17 @@ app.post('/api/render-custom-script', async (req, res) => {
 // 4. List Podcasts
 app.get('/api/podcasts', (req, res) => {
   res.json({ podcasts: podcastLibrary });
+});
+
+// Global Express Error Catch Middleware for Body Limits
+app.use((err, req, res, next) => {
+  if (err.type === 'entity.too.large' || err.status === 413) {
+    return res.status(413).json({
+      error: 'Payload Too Large',
+      details: 'The uploaded file or pasted text exceeds maximum server payload limits. Please use a text snippet up to 50,000 characters.'
+    });
+  }
+  next(err);
 });
 
 // Port & Error Handler

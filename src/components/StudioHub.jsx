@@ -52,7 +52,11 @@ export default function StudioHub({ onGeneratePodcast, isGenerating }) {
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      const content = event.target.result;
+      let content = event.target.result || '';
+      // Truncate to 50,000 characters if file is extremely large
+      if (content.length > 50000) {
+        content = content.substring(0, 50000) + '\n\n[Text automatically trimmed to 50,000 characters for optimal LLM context efficiency.]';
+      }
       setTopicInput(content);
       setUploadedCharCount(content.length);
     };
