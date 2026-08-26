@@ -11,16 +11,12 @@ export default {
         sans: ['Plus Jakarta Sans', 'sans-serif'],
       },
       colors: {
-        antigravity: {
-          bg: '#0F1117',          // Antigravity Deep Obsidian Slate
-          card: '#1A1D27',        // Surface Container Card
-          hover: '#222634',       // Hover / Selected surface
-          border: '#2B3042',      // Micro-border
-          indigo: '#6366F1',      // Antigravity Primary Electric Indigo
-          indigoSoft: '#818CF8',  // Soft Indigo highlight
-          text: '#F8FAFC',        // High-contrast text
-          subtext: '#94A3B8',     // Slate secondary text
-          muted: '#64748B'
+        glass: {
+          bg: '#0B0D17',
+          card: 'rgba(255, 255, 255, 0.03)',
+          border: 'rgba(255, 255, 255, 0.08)',
+          hover: 'rgba(255, 255, 255, 0.06)',
+          accent: '#818CF8'
         }
       }
     },

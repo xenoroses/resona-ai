@@ -10,7 +10,7 @@ export default function AudioPlayerView({ currentPodcast }) {
 
   if (!currentPodcast) {
     return (
-      <div className="text-center py-16 text-xs text-[#94A3B8] italic">
+      <div className="text-center py-16 text-xs text-slate-400 italic">
         No generated audio podcast selected. Generate an episode in Studio Hub first!
       </div>
     );
@@ -67,7 +67,7 @@ export default function AudioPlayerView({ currentPodcast }) {
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-5">
+    <div className="max-w-5xl mx-auto space-y-6">
       
       <audio
         ref={audioRef}
@@ -76,32 +76,34 @@ export default function AudioPlayerView({ currentPodcast }) {
         onEnded={() => setIsPlaying(false)}
       />
 
-      {/* Main Episode Banner & Audio Console */}
-      <div className="bg-[#1A1D27] border border-[#2B3042] rounded-xl p-5 space-y-4">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-3 border-b border-[#2B3042]">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-lg bg-[#6366F1]/15 border border-[#6366F1]/40 flex items-center justify-center text-[#6366F1] shrink-0">
-              <Radio className="w-5 h-5 animate-pulse" />
+      {/* Main Glass Audio Card */}
+      <div className="glass-panel rounded-2xl p-6 space-y-5">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-white/10">
+          <div className="flex items-center space-x-4">
+            <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-indigo-500 to-purple-500 p-0.5 shadow-lg shadow-indigo-500/20 shrink-0">
+              <div className="w-full h-full bg-[#0B0D17] rounded-[14px] flex items-center justify-center text-purple-400">
+                <Radio className="w-6 h-6 animate-pulse" />
+              </div>
             </div>
             <div>
-              <span className="text-[10px] font-mono text-[#6366F1] uppercase font-bold">Resona Episode Audio</span>
-              <h3 className="text-base font-bold text-[#F8FAFC]">{currentPodcast.title}</h3>
-              <p className="text-xs text-[#94A3B8] line-clamp-1">{currentPodcast.researchSummary}</p>
+              <span className="text-[11px] font-mono text-purple-300 uppercase font-bold">Resona Episode Console</span>
+              <h3 className="text-lg font-bold text-white">{currentPodcast.title}</h3>
+              <p className="text-xs text-slate-400 line-clamp-1">{currentPodcast.researchSummary}</p>
             </div>
           </div>
 
           <a
             href={currentPodcast.audioUrl}
             download={`${currentPodcast.title}.mp3`}
-            className="px-3.5 py-1.5 rounded-lg bg-[#0F1117] hover:bg-[#222634] border border-[#2B3042] text-xs font-mono text-[#6366F1] flex items-center space-x-2 transition-colors shrink-0"
+            className="px-4 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-mono text-purple-300 flex items-center space-x-2 backdrop-blur-md transition-all shrink-0"
           >
-            <Download className="w-3.5 h-3.5" />
+            <Download className="w-4 h-4" />
             <span>Download MP3</span>
           </a>
         </div>
 
-        {/* Audio Progress Bar */}
-        <div className="space-y-1.5">
+        {/* Custom Progress Slider */}
+        <div className="space-y-2">
           <input
             type="range"
             min={0}
@@ -109,35 +111,35 @@ export default function AudioPlayerView({ currentPodcast }) {
             step={0.1}
             value={currentTime}
             onChange={handleSeek}
-            className="w-full accent-[#6366F1] h-1.5 bg-[#0F1117] rounded-lg cursor-pointer"
+            className="w-full accent-purple-400 h-2 bg-white/10 rounded-lg cursor-pointer"
           />
-          <div className="flex justify-between text-[10px] font-mono text-[#64748B]">
+          <div className="flex justify-between text-xs font-mono text-slate-400">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
         </div>
 
         {/* Controls */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex items-center space-x-3">
+        <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center space-x-4">
             <button
               onClick={togglePlay}
-              className="w-10 h-10 rounded-lg bg-[#6366F1] hover:bg-[#4F46E5] text-white flex items-center justify-center shadow-md transition-transform active:scale-95"
+              className="w-12 h-12 rounded-2xl btn-gradient-primary flex items-center justify-center shadow-lg active:scale-95"
             >
-              {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
+              {isPlaying ? <Pause className="w-6 h-6 fill-current" /> : <Play className="w-6 h-6 fill-current ml-0.5" />}
             </button>
-            <span className="text-xs font-mono text-[#94A3B8] flex items-center gap-1">
-              <Clock className="w-3.5 h-3.5 text-[#6366F1]" /> {currentPodcast.engine || 'Edge-TTS Neural Engine'}
+            <span className="text-xs font-mono text-slate-400 flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-purple-400" /> {currentPodcast.engine || 'Edge-TTS Neural Engine'}
             </span>
           </div>
 
-          <div className="flex items-center space-x-1 bg-[#0F1117] p-1 rounded-lg border border-[#2B3042]">
+          <div className="flex items-center space-x-1 bg-white/[0.03] p-1 rounded-xl border border-white/10 backdrop-blur-md">
             {[1.0, 1.25, 1.5, 2.0].map((rate) => (
               <button
                 key={rate}
                 onClick={() => handleSpeedChange(rate)}
-                className={`text-xs font-mono px-2 py-0.5 rounded transition-colors ${
-                  playbackRate === rate ? 'bg-[#6366F1] text-white font-bold' : 'text-[#94A3B8] hover:text-[#F8FAFC]'
+                className={`text-xs font-mono px-3 py-1 rounded-lg transition-colors ${
+                  playbackRate === rate ? 'btn-gradient-primary font-bold' : 'text-slate-400 hover:text-white'
                 }`}
               >
                 {rate}x
@@ -148,12 +150,12 @@ export default function AudioPlayerView({ currentPodcast }) {
       </div>
 
       {/* Transcript Timeline */}
-      <div className="bg-[#1A1D27] border border-[#2B3042] rounded-xl p-5 space-y-3">
-        <h4 className="text-xs font-bold uppercase tracking-wider text-[#64748B] font-mono flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-[#6366F1]" /> Interactive Synced Transcript
+      <div className="glass-panel rounded-2xl p-6 space-y-4">
+        <h4 className="text-xs font-bold uppercase tracking-wider text-purple-300 font-mono flex items-center gap-2">
+          <Sparkles className="w-3.5 h-3.5 text-indigo-400" /> Interactive Synced Transcript
         </h4>
 
-        <div className="space-y-2.5 max-h-96 overflow-y-auto pr-1">
+        <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
           {currentPodcast.dialogue.map((turn, idx) => {
             const timecode = currentPodcast.timecodes?.[idx];
             const startTime = timecode?.startTimeSec || (idx * 6.0);
@@ -163,26 +165,26 @@ export default function AudioPlayerView({ currentPodcast }) {
               <div
                 key={idx}
                 onClick={() => jumpToSpeakerTime(startTime)}
-                className="p-3 rounded-lg bg-[#0F1117] hover:bg-[#222634] border border-[#2B3042] cursor-pointer transition-all flex items-start justify-between gap-4 group"
+                className="p-4 rounded-xl glass-panel-interactive cursor-pointer flex items-start justify-between gap-4 group"
               >
                 <div className="space-y-1">
                   <div className="flex items-center space-x-2">
-                    <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded ${
-                      isAlex ? 'bg-[#1A1D27] text-[#818CF8] border border-[#2B3042]' : 'bg-[#1A1D27] text-[#10B981] border border-[#2B3042]'
+                    <span className={`text-[11px] font-mono font-bold px-2.5 py-0.5 rounded-lg border ${
+                      isAlex ? 'bg-purple-500/10 text-purple-300 border-purple-500/30' : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
                     }`}>
                       {turn.speaker}
                     </span>
-                    <span className="text-[10px] font-mono text-[#64748B]">
+                    <span className="text-[10px] font-mono text-slate-400">
                       [{formatTime(startTime)}]
                     </span>
                   </div>
-                  <p className="text-xs text-[#F8FAFC] leading-relaxed group-hover:text-white">
+                  <p className="text-xs text-white leading-relaxed">
                     {turn.text}
                   </p>
                 </div>
 
-                <div className="w-6 h-6 rounded bg-[#1A1D27] group-hover:bg-[#6366F1] text-[#94A3B8] group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
-                  <Play className="w-3 h-3 fill-current ml-0.5" />
+                <div className="w-8 h-8 rounded-xl bg-white/[0.04] group-hover:bg-purple-500 text-slate-400 group-hover:text-white flex items-center justify-center shrink-0 transition-colors">
+                  <Play className="w-3.5 h-3.5 fill-current ml-0.5" />
                 </div>
               </div>
             );

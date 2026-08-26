@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Edit3, Plus, Trash2, RefreshCw, Volume2, Code, UserCheck } from 'lucide-react';
+import { Edit3, Plus, Trash2, RefreshCw, Volume2, UserCheck } from 'lucide-react';
 
 export default function ScriptEditor({ currentPodcast, onRenderCustomAudio, isRendering }) {
   const [dialogueTurns, setDialogueTurns] = useState([]);
@@ -14,7 +14,7 @@ export default function ScriptEditor({ currentPodcast, onRenderCustomAudio, isRe
 
   if (!currentPodcast && dialogueTurns.length === 0) {
     return (
-      <div className="text-center py-16 text-xs text-[#94A3B8] italic">
+      <div className="text-center py-16 text-xs text-slate-400 italic">
         No active podcast script to edit. Generate an episode in Studio Hub first!
       </div>
     );
@@ -52,72 +52,72 @@ export default function ScriptEditor({ currentPodcast, onRenderCustomAudio, isRe
   };
 
   return (
-    <div className="max-w-5xl mx-auto space-y-5">
+    <div className="max-w-5xl mx-auto space-y-6">
       
-      {/* Scriptboard Header */}
-      <div className="bg-[#1A1D27] border border-[#2B3042] rounded-xl p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      {/* Header */}
+      <div className="glass-panel rounded-2xl p-6 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center space-x-2 text-xs font-mono text-[#6366F1] font-bold uppercase mb-1">
-            <UserCheck className="w-4 h-4" />
+          <div className="flex items-center space-x-2 text-xs font-mono text-purple-300 uppercase font-bold mb-1">
+            <UserCheck className="w-4 h-4 text-indigo-400" />
             <span>LangGraph HITL Checkpoint</span>
           </div>
           <input
             type="text"
             value={episodeTitle}
             onChange={(e) => setEpisodeTitle(e.target.value)}
-            className="text-base font-bold text-[#F8FAFC] bg-transparent border-b border-transparent hover:border-[#2B3042] focus:border-[#6366F1] focus:outline-none w-full"
+            className="text-lg font-bold text-white bg-transparent border-b border-transparent hover:border-white/20 focus:border-purple-400 focus:outline-none w-full"
           />
         </div>
 
         <button
           onClick={handleRenderAudio}
           disabled={isRendering || dialogueTurns.length === 0}
-          className="px-4 py-2 rounded-lg bg-[#6366F1] hover:bg-[#4F46E5] text-white font-bold text-xs flex items-center space-x-2 disabled:opacity-40 transition-all shadow-md shrink-0"
+          className="px-5 py-3 rounded-xl btn-gradient-primary text-xs font-bold flex items-center space-x-2 disabled:opacity-40 shrink-0"
         >
           {isRendering ? (
             <>
               <RefreshCw className="w-4 h-4 animate-spin" />
-              <span>Synthesizing Dual Voices...</span>
+              <span>Rendering Audio...</span>
             </>
           ) : (
             <>
               <Volume2 className="w-4 h-4" />
-              <span>Render Dual-Voice Audio</span>
+              <span>Render Custom Audio</span>
             </>
           )}
         </button>
       </div>
 
       {/* Turns List */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {dialogueTurns.map((turn, index) => {
           const isAlex = turn.speaker === 'Alex';
 
           return (
-            <div key={index} className="bg-[#1A1D27] border border-[#2B3042] rounded-xl p-3.5 space-y-2.5">
+            <div key={index} className="glass-panel rounded-2xl p-4 space-y-3 relative">
               <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
+                <div className="flex items-center space-x-3">
                   <select
                     value={turn.speaker}
                     onChange={(e) => handleSpeakerChange(index, e.target.value)}
-                    className={`text-xs font-mono font-bold px-2.5 py-0.5 rounded border focus:outline-none cursor-pointer ${
+                    className={`text-xs font-mono font-bold px-3 py-1 rounded-xl border focus:outline-none cursor-pointer ${
                       isAlex
-                        ? 'bg-[#0F1117] text-[#818CF8] border-[#2B3042]'
-                        : 'bg-[#0F1117] text-[#10B981] border-[#2B3042]'
+                        ? 'bg-purple-500/10 text-purple-300 border-purple-500/30'
+                        : 'bg-emerald-500/10 text-emerald-300 border-emerald-500/30'
                     }`}
                   >
                     <option value="Alex">Alex (Inquisitive Host)</option>
                     <option value="Sam">Sam (Domain Expert)</option>
                   </select>
-                  <span className="text-[10px] text-[#64748B] font-mono">Turn #{index + 1}</span>
+                  <span className="text-[11px] text-slate-400 font-mono">Turn #{index + 1}</span>
                 </div>
 
                 <button
                   onClick={() => handleDeleteTurn(index)}
-                  className="p-1 rounded hover:bg-rose-950/50 text-[#64748B] hover:text-rose-400 transition-colors"
-                  title="Delete Turn"
+                  className="p-1.5 rounded-lg hover:bg-rose-950/50 text-slate-400 hover:text-rose-400 transition-colors"
+                  title="Delete Line"
                 >
-                  <Trash2 className="w-3.5 h-3.5" />
+                  <Trash2 className="w-4 h-4" />
                 </button>
               </div>
 
@@ -125,21 +125,21 @@ export default function ScriptEditor({ currentPodcast, onRenderCustomAudio, isRe
                 value={turn.text}
                 onChange={(e) => handleTurnTextChange(index, e.target.value)}
                 rows={2}
-                placeholder="Type dialogue line..."
-                className="w-full bg-[#0F1117] border border-[#2B3042] rounded-lg p-2.5 text-xs text-[#F8FAFC] placeholder-[#64748B] focus:outline-none focus:border-[#6366F1] font-sans leading-relaxed"
+                placeholder="Type host dialogue..."
+                className="w-full glass-input rounded-xl p-3.5 text-xs text-white placeholder-slate-500 font-sans leading-relaxed"
               />
             </div>
           );
         })}
       </div>
 
-      {/* Add Line */}
-      <div className="flex justify-center pt-1">
+      {/* Add Line Button */}
+      <div className="flex justify-center pt-2">
         <button
           onClick={handleAddTurn}
-          className="flex items-center space-x-2 px-4 py-1.5 rounded-lg bg-[#1A1D27] hover:bg-[#222634] border border-[#2B3042] text-xs font-semibold text-[#94A3B8] hover:text-[#F8FAFC] transition-colors"
+          className="flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 text-xs font-semibold text-slate-300 hover:text-white backdrop-blur-md transition-all"
         >
-          <Plus className="w-3.5 h-3.5 text-[#6366F1]" />
+          <Plus className="w-4 h-4 text-purple-400" />
           <span>Add Dialogue Line</span>
         </button>
       </div>

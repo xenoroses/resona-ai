@@ -6,17 +6,14 @@ import {
   Cpu,
   Sparkles,
   Search,
-  Sliders,
   ChevronLeft,
   ChevronRight,
   Folder,
   Play,
   Pause,
   Download,
-  Clock,
-  Terminal,
   Activity,
-  Plus
+  Layers
 } from 'lucide-react';
 import StudioHub from './components/StudioHub.jsx';
 import ScriptEditor from './components/ScriptEditor.jsx';
@@ -24,15 +21,15 @@ import AudioPlayerView from './components/AudioPlayerView.jsx';
 import AgentTelemetry from './components/AgentTelemetry.jsx';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('hub'); // 'hub' | 'editor' | 'player' | 'telemetry'
+  const [activeTab, setActiveTab] = useState('hub');
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [podcasts, setPodcasts] = useState([]);
   const [currentPodcast, setCurrentPodcast] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isRendering, setIsRendering] = useState(false);
   const [isServerConnected, setIsServerConnected] = useState(true);
-  
-  // Audio Player Dock State
+
+  // Audio Dock State
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -103,7 +100,6 @@ export default function App() {
     }
   };
 
-  // Audio Dock Handlers
   const togglePlay = () => {
     if (!audioRef.current) return;
     if (isPlaying) {
@@ -129,9 +125,13 @@ export default function App() {
   };
 
   return (
-    <div className="h-screen w-screen bg-[#0F1117] text-[#F8FAFC] font-sans flex flex-col overflow-hidden">
+    <div className="h-screen w-screen bg-gradient-to-br from-[#0B0D17] via-[#101426] to-[#0A0D18] text-[#F8FAFC] font-sans flex flex-col overflow-hidden relative">
       
-      {/* HTML5 Audio Element for Bottom Dock */}
+      {/* Background Ambient Glow Orbs */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+      {/* HTML5 Audio Player */}
       {currentPodcast && (
         <audio
           ref={audioRef}
@@ -141,58 +141,54 @@ export default function App() {
         />
       )}
 
-      {/* 1. ANTIGRAVITY TOP HEADER NAVBAR */}
-      <header className="h-12 border-b border-[#2B3042] bg-[#0F1117] px-4 flex items-center justify-between shrink-0 select-none">
+      {/* 1. FROSTED GLASS TOP HEADER */}
+      <header className="h-14 border-b border-white/[0.08] bg-[#0B0D17]/70 backdrop-blur-xl px-5 flex items-center justify-between shrink-0 select-none z-20">
         
-        {/* Left: Brand + Workspace Pill */}
+        {/* Brand Logo & Gradient Badge */}
         <div className="flex items-center space-x-3">
-          <div className="flex items-center space-x-2">
-            <div className="w-6 h-6 rounded bg-[#6366F1] flex items-center justify-center text-white font-bold text-xs shadow-sm">
-              R
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-500 via-purple-500 to-[#D97757] p-0.5 shadow-lg shadow-indigo-500/20">
+            <div className="w-full h-full bg-[#0B0D17] rounded-[10px] flex items-center justify-center">
+              <Radio className="w-4 h-4 text-purple-400" />
             </div>
-            <span className="text-sm font-bold tracking-tight text-[#F8FAFC]">Resona AI</span>
           </div>
 
-          <span className="text-[11px] font-mono text-[#94A3B8] bg-[#1A1D27] px-2.5 py-0.5 rounded-md border border-[#2B3042]">
-            workspace / audio-studio
-          </span>
-
-          <div className="flex items-center space-x-1.5 text-[11px] font-mono text-[#94A3B8] pl-2 border-l border-[#2B3042]">
-            <span className={`w-2 h-2 rounded-full ${isServerConnected ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-            <span>{isServerConnected ? 'Engine 3.13 Connected' : 'Disconnected'}</span>
+          <div className="flex items-baseline space-x-2">
+            <h1 className="text-base font-extrabold tracking-tight text-gradient">Resona AI</h1>
+            <span className="text-[10px] font-mono text-purple-300 bg-purple-500/10 px-2 py-0.5 rounded-full border border-purple-500/20">
+              Glass Studio
+            </span>
           </div>
         </div>
 
-        {/* Center: Command Bar */}
-        <div className="hidden md:flex items-center bg-[#1A1D27] border border-[#2B3042] rounded-lg px-3 py-1 text-xs text-[#94A3B8] space-x-2 w-96">
-          <Search className="w-3.5 h-3.5 text-[#64748B]" />
-          <span className="flex-1 truncate">Search podcasts, whitepapers, or prompt scripts...</span>
-          <kbd className="bg-[#0F1117] text-[10px] font-mono px-1.5 py-0.5 rounded border border-[#2B3042] text-[#64748B]">Ctrl K</kbd>
+        {/* Search Input Bar */}
+        <div className="hidden md:flex items-center bg-white/[0.03] border border-white/10 rounded-xl px-3.5 py-1.5 text-xs text-slate-400 space-x-2 w-96 backdrop-blur-md">
+          <Search className="w-3.5 h-3.5 text-slate-500" />
+          <span className="flex-1 truncate">Search transcripts, documents, or AWS papers...</span>
+          <kbd className="bg-white/5 text-[10px] font-mono px-1.5 py-0.5 rounded border border-white/10 text-slate-400">⌘K</kbd>
         </div>
 
-        {/* Right: Model & Engine Badge */}
+        {/* Engine Status */}
         <div className="flex items-center space-x-2">
-          <span className="text-[11px] font-mono text-[#818CF8] bg-[#6366F1]/10 px-2.5 py-1 rounded-md border border-[#6366F1]/30 flex items-center gap-1.5">
-            <Activity className="w-3 h-3 text-[#6366F1]" />
-            <span>llama-3.3-70b</span>
+          <span className="text-[11px] font-mono text-purple-300 bg-white/[0.04] px-3 py-1 rounded-xl border border-white/10 flex items-center gap-2 backdrop-blur-md">
+            <span className={`w-2 h-2 rounded-full ${isServerConnected ? 'bg-emerald-400 shadow-[0_0_8px_#34d399]' : 'bg-rose-500'}`} />
+            <span>{isServerConnected ? 'Python Core Online' : 'Offline'}</span>
           </span>
         </div>
       </header>
 
-      {/* 2. MAIN WORKSPACE CONTAINER (Sidebar + Editor Console) */}
-      <div className="flex-1 flex overflow-hidden">
+      {/* 2. MAIN GLASS WORKSPACE CONTAINER */}
+      <div className="flex-1 flex overflow-hidden relative z-10">
         
-        {/* LEFT COLLAPSIBLE SIDEBAR */}
-        <aside className={`${isSidebarOpen ? 'w-64' : 'w-14'} border-r border-[#2B3042] bg-[#0F1117] flex flex-col justify-between transition-all duration-200 shrink-0 select-none`}>
+        {/* FROSTED GLASS LEFT SIDEBAR */}
+        <aside className={`${isSidebarOpen ? 'w-64' : 'w-16'} border-r border-white/[0.08] bg-[#0F1221]/50 backdrop-blur-xl flex flex-col justify-between transition-all duration-300 shrink-0 select-none`}>
           
-          {/* Navigation Links */}
-          <div className="p-2 space-y-1">
+          <div className="p-3 space-y-1.5">
             <button
               onClick={() => setActiveTab('hub')}
-              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'hub'
-                  ? 'bg-[#6366F1] text-white font-semibold'
-                  : 'text-[#94A3B8] hover:bg-[#1A1D27] hover:text-[#F8FAFC]'
+                  ? 'btn-gradient-primary'
+                  : 'text-slate-400 hover:bg-white/[0.05] hover:text-white'
               }`}
             >
               <Sparkles className="w-4 h-4 shrink-0" />
@@ -201,10 +197,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('editor')}
-              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'editor'
-                  ? 'bg-[#6366F1] text-white font-semibold'
-                  : 'text-[#94A3B8] hover:bg-[#1A1D27] hover:text-[#F8FAFC]'
+                  ? 'btn-gradient-primary'
+                  : 'text-slate-400 hover:bg-white/[0.05] hover:text-white'
               }`}
             >
               <Edit3 className="w-4 h-4 shrink-0" />
@@ -213,10 +209,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('player')}
-              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'player'
-                  ? 'bg-[#6366F1] text-white font-semibold'
-                  : 'text-[#94A3B8] hover:bg-[#1A1D27] hover:text-[#F8FAFC]'
+                  ? 'btn-gradient-primary'
+                  : 'text-slate-400 hover:bg-white/[0.05] hover:text-white'
               }`}
             >
               <Volume2 className="w-4 h-4 shrink-0" />
@@ -225,10 +221,10 @@ export default function App() {
 
             <button
               onClick={() => setActiveTab('telemetry')}
-              className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              className={`w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl text-xs font-semibold transition-all ${
                 activeTab === 'telemetry'
-                  ? 'bg-[#6366F1] text-white font-semibold'
-                  : 'text-[#94A3B8] hover:bg-[#1A1D27] hover:text-[#F8FAFC]'
+                  ? 'btn-gradient-primary'
+                  : 'text-slate-400 hover:bg-white/[0.05] hover:text-white'
               }`}
             >
               <Cpu className="w-4 h-4 shrink-0" />
@@ -236,16 +232,16 @@ export default function App() {
             </button>
           </div>
 
-          {/* Recent Episodes Explorer List */}
+          {/* Episodes Explorer Drawer */}
           {isSidebarOpen && (
-            <div className="flex-1 p-3 overflow-y-auto border-t border-[#2B3042]/60 space-y-2">
-              <div className="flex items-center justify-between text-[11px] font-mono text-[#64748B] uppercase tracking-wider font-bold">
+            <div className="flex-1 p-3 overflow-y-auto border-t border-white/[0.08] space-y-2">
+              <div className="flex items-center justify-between text-[11px] font-mono text-purple-300 font-bold uppercase tracking-wider">
                 <span className="flex items-center gap-1.5">
-                  <Folder className="w-3.5 h-3.5 text-[#6366F1]" /> Episodes ({podcasts.length})
+                  <Folder className="w-3.5 h-3.5 text-indigo-400" /> Episodes ({podcasts.length})
                 </span>
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1.5">
                 {podcasts.map((pod) => (
                   <button
                     key={pod.id}
@@ -253,14 +249,14 @@ export default function App() {
                       setCurrentPodcast(pod);
                       setActiveTab('player');
                     }}
-                    className={`w-full text-left p-2 rounded-md border text-xs transition-all ${
+                    className={`w-full text-left p-2.5 rounded-xl border text-xs transition-all ${
                       currentPodcast?.id === pod.id
-                        ? 'bg-[#1A1D27] border-[#6366F1] text-[#F8FAFC]'
-                        : 'bg-[#0F1117] border-[#2B3042] text-[#94A3B8] hover:bg-[#1A1D27]'
+                        ? 'bg-purple-500/10 border-purple-500/40 text-white shadow-md'
+                        : 'bg-white/[0.02] border-white/5 text-slate-400 hover:bg-white/[0.05] hover:text-white'
                     }`}
                   >
-                    <div className="font-semibold truncate">{pod.title}</div>
-                    <div className="text-[10px] font-mono text-[#64748B] mt-0.5">
+                    <div className="font-bold truncate">{pod.title}</div>
+                    <div className="text-[10px] font-mono text-slate-500 mt-0.5">
                       {pod.durationSec}s • {pod.dialogue?.length || 0} turns
                     </div>
                   </button>
@@ -270,18 +266,18 @@ export default function App() {
           )}
 
           {/* Sidebar Toggle Footer */}
-          <div className="p-2 border-t border-[#2B3042] flex justify-end">
+          <div className="p-3 border-t border-white/[0.08] flex justify-end">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-1.5 rounded-lg bg-[#1A1D27] hover:bg-[#222634] text-[#94A3B8] hover:text-[#F8FAFC] border border-[#2B3042]"
+              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-slate-400 hover:text-white border border-white/10 backdrop-blur-md"
             >
               {isSidebarOpen ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
             </button>
           </div>
         </aside>
 
-        {/* CENTER MAIN WORKSPACE */}
-        <main className="flex-1 bg-[#0F1117] overflow-y-auto p-6">
+        {/* CENTER WORKSPACE WORKSTATION */}
+        <main className="flex-1 overflow-y-auto p-6 relative">
           {activeTab === 'hub' && (
             <StudioHub
               onGeneratePodcast={handleGeneratePodcast}
@@ -307,25 +303,23 @@ export default function App() {
         </main>
       </div>
 
-      {/* 3. PERSISTENT BOTTOM AUDIO DOCK */}
+      {/* 3. FLOATING GLASS AUDIO PLAYER DOCK */}
       {currentPodcast && (
-        <div className="h-16 border-t border-[#2B3042] bg-[#1A1D27] px-6 flex items-center justify-between shrink-0 select-none shadow-2xl">
+        <div className="h-16 border-t border-white/[0.1] bg-[#0F1221]/80 backdrop-blur-2xl px-6 flex items-center justify-between shrink-0 select-none shadow-[0_-10px_30px_rgba(0,0,0,0.5)] z-30">
           
-          {/* Track Info */}
           <div className="flex items-center space-x-3 w-1/4">
             <button
               onClick={togglePlay}
-              className="w-10 h-10 rounded-lg bg-[#6366F1] hover:bg-[#4F46E5] text-white flex items-center justify-center shadow-md transition-transform active:scale-95 shrink-0"
+              className="w-10 h-10 rounded-xl btn-gradient-primary flex items-center justify-center shadow-lg active:scale-95 shrink-0"
             >
               {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-0.5" />}
             </button>
             <div className="truncate">
-              <div className="text-xs font-bold text-[#F8FAFC] truncate">{currentPodcast.title}</div>
-              <div className="text-[10px] font-mono text-[#94A3B8] truncate">{currentPodcast.topic}</div>
+              <div className="text-xs font-bold text-white truncate">{currentPodcast.title}</div>
+              <div className="text-[10px] font-mono text-purple-300 truncate">{currentPodcast.topic}</div>
             </div>
           </div>
 
-          {/* Center Audio Progress */}
           <div className="flex-1 max-w-xl mx-8 space-y-1">
             <input
               type="range"
@@ -338,23 +332,22 @@ export default function App() {
                 if (audioRef.current) audioRef.current.currentTime = val;
                 setCurrentTime(val);
               }}
-              className="w-full accent-[#6366F1] h-1.5 bg-[#0F1117] rounded-lg cursor-pointer"
+              className="w-full accent-purple-400 h-1.5 bg-white/10 rounded-lg cursor-pointer"
             />
-            <div className="flex justify-between text-[10px] font-mono text-[#64748B]">
+            <div className="flex justify-between text-[10px] font-mono text-slate-400">
               <span>{formatTime(currentTime)}</span>
               <span>{formatTime(duration)}</span>
             </div>
           </div>
 
-          {/* Right Download & Specs */}
           <div className="flex items-center space-x-3">
-            <span className="text-[11px] font-mono text-[#818CF8] bg-[#0F1117] px-2.5 py-1 rounded border border-[#2B3042]">
+            <span className="text-[11px] font-mono text-indigo-300 bg-white/[0.05] px-3 py-1 rounded-xl border border-white/10 backdrop-blur-md">
               Edge-TTS Neural
             </span>
             <a
               href={currentPodcast.audioUrl}
               download={`${currentPodcast.title}.mp3`}
-              className="p-2 rounded-lg bg-[#0F1117] hover:bg-[#222634] text-[#6366F1] border border-[#2B3042] transition-colors"
+              className="p-2 rounded-xl bg-white/[0.04] hover:bg-white/[0.08] text-purple-300 border border-white/10 transition-colors"
               title="Download MP3"
             >
               <Download className="w-4 h-4" />
