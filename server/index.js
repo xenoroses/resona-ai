@@ -18,7 +18,9 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 app.use(cors());
-app.use(express.json());
+// Expand JSON body limit to 50MB for handling large text documents and papers
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use('/outputs', express.static(outputsDir));
 
 // In-Memory Podcasts Library
@@ -28,7 +30,7 @@ let podcastLibrary = [];
 function runPythonCore(jsonInput) {
   return new Promise((resolve, reject) => {
     const scriptPath = path.join(rootDir, 'engine', 'resona_core.py');
-    execFile('python', [scriptPath, '--json', jsonInput], { maxBuffer: 1024 * 1024 * 10 }, (error, stdout, stderr) => {
+    execFile('python', [scriptPath, '--json', jsonInput], { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
       if (error) {
         console.error('Python Core Error:', stderr || error.message);
         return reject(error);
@@ -103,7 +105,7 @@ app.post('/api/render-custom-script', async (req, res) => {
     const filename = `resona_custom_${Date.now()}.mp3`;
     const jsonStr = JSON.stringify(dialogue);
 
-    execFile('python', [rendererScriptPath, '--json', jsonStr, '--output', filename], (error, stdout, stderr) => {
+    execFile('python', [rendererScriptPath, '--json', jsonStr, '--output', filename], { maxBuffer: 1024 * 1024 * 50 }, (error, stdout, stderr) => {
       if (error) {
         return res.status(500).json({ error: 'Audio render failed', details: stderr || error.message });
       }
