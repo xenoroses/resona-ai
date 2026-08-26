@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Radio, Edit3, Volume2, Cpu, Plus, Sparkles, RefreshCw } from 'lucide-react';
+import { Radio, Edit3, Volume2, Cpu, Sparkles, Sliders } from 'lucide-react';
 import StudioHub from './components/StudioHub.jsx';
 import ScriptEditor from './components/ScriptEditor.jsx';
 import AudioPlayerView from './components/AudioPlayerView.jsx';
 import AgentTelemetry from './components/AgentTelemetry.jsx';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState('hub'); // 'hub' | 'editor' | 'player' | 'telemetry'
+  const [activeTab, setActiveTab] = useState('hub');
   const [podcasts, setPodcasts] = useState([]);
   const [currentPodcast, setCurrentPodcast] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -79,30 +79,32 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#18181B] text-[#F4F4F5] font-sans flex flex-col justify-between">
+    <div className="min-h-screen bg-[#0C131D] text-[#F0F9FF] font-sans flex flex-col justify-between">
       
-      {/* Top Claude Navbar */}
-      <header className="h-14 border-b border-[#27272A] bg-[#18181B] px-4 md:px-6 flex items-center justify-between">
+      {/* Nordic Workstation Top Navbar */}
+      <header className="h-14 border-b border-[#222F43] bg-[#0C131D]/90 backdrop-blur-md px-4 md:px-6 flex items-center justify-between">
         
-        {/* Brand */}
-        <div className="flex items-center space-x-2.5">
-          <div className="w-8 h-8 rounded-xl bg-[#D97757]/15 border border-[#D97757]/40 flex items-center justify-center shadow-sm">
-            <Radio className="w-4 h-4 text-[#D97757]" />
+        {/* Brand with Aquamarine Glow */}
+        <div className="flex items-center space-x-3">
+          <div className="w-8 h-8 rounded-xl bg-[#2DD4BF]/15 border border-[#2DD4BF]/40 flex items-center justify-center shadow-lg shadow-[#2DD4BF]/10">
+            <Radio className="w-4 h-4 text-[#2DD4BF]" />
           </div>
           <div className="flex items-baseline space-x-2">
-            <h1 className="text-base font-bold tracking-tight text-[#F4F4F5]">Resona AI</h1>
-            <span className="text-[10px] font-mono text-[#D97757] font-semibold">v2.4</span>
+            <h1 className="text-base font-bold tracking-tight text-[#F0F9FF]">Resona AI</h1>
+            <span className="text-[10px] font-mono text-[#2DD4BF] font-bold uppercase tracking-wider">
+              Audio Workstation
+            </span>
           </div>
         </div>
 
         {/* Center Tabs */}
-        <nav className="flex items-center space-x-1 bg-[#27272A] p-1 rounded-xl border border-[#3F3F46]/50">
+        <nav className="flex items-center space-x-1 bg-[#151F2C] p-1 rounded-xl border border-[#222F43]">
           <button
             onClick={() => setActiveTab('hub')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'hub'
-                ? 'bg-[#18181B] text-[#D97757] font-semibold shadow-sm'
-                : 'text-[#A1A1AA] hover:text-[#F4F4F5]'
+                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
+                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
             }`}
           >
             <Sparkles className="w-3.5 h-3.5" />
@@ -113,8 +115,8 @@ export default function App() {
             onClick={() => setActiveTab('editor')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'editor'
-                ? 'bg-[#18181B] text-[#D97757] font-semibold shadow-sm'
-                : 'text-[#A1A1AA] hover:text-[#F4F4F5]'
+                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
+                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
             }`}
           >
             <Edit3 className="w-3.5 h-3.5" />
@@ -125,8 +127,8 @@ export default function App() {
             onClick={() => setActiveTab('player')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'player'
-                ? 'bg-[#18181B] text-[#D97757] font-semibold shadow-sm'
-                : 'text-[#A1A1AA] hover:text-[#F4F4F5]'
+                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
+                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
             }`}
           >
             <Volume2 className="w-3.5 h-3.5" />
@@ -137,8 +139,8 @@ export default function App() {
             onClick={() => setActiveTab('telemetry')}
             className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
               activeTab === 'telemetry'
-                ? 'bg-[#18181B] text-[#D97757] font-semibold shadow-sm'
-                : 'text-[#A1A1AA] hover:text-[#F4F4F5]'
+                ? 'bg-[#0C131D] text-[#2DD4BF] font-semibold border border-[#222F43] shadow-sm'
+                : 'text-[#94A3B8] hover:text-[#F0F9FF]'
             }`}
           >
             <Cpu className="w-3.5 h-3.5" />
@@ -146,10 +148,10 @@ export default function App() {
           </button>
         </nav>
 
-        {/* Server Status Indicator */}
-        <div className="flex items-center space-x-1.5 text-xs font-mono text-[#A1A1AA]">
-          <span className={`w-2 h-2 rounded-full ${isServerConnected ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-          <span className="hidden md:inline">{isServerConnected ? 'Express + CrewAI Core Online' : 'Server Offline'}</span>
+        {/* Right Status */}
+        <div className="flex items-center space-x-2 text-xs font-mono text-[#94A3B8]">
+          <span className={`w-2 h-2 rounded-full ${isServerConnected ? 'bg-[#2DD4BF] animate-pulse' : 'bg-rose-500'}`} />
+          <span className="hidden md:inline">{isServerConnected ? 'Engine Online' : 'Engine Offline'}</span>
         </div>
       </header>
 
@@ -180,8 +182,8 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#27272A] py-2.5 px-6 text-center text-xs font-mono text-[#71717A]">
-        Resona AI • Autonomous Multi-Agent Podcast & Audio Intelligence Studio
+      <footer className="border-t border-[#222F43] py-2.5 px-6 text-center text-xs font-mono text-[#94A3B8]">
+        Resona AI • Nordic Audio Workstation • Dual-Voice Neural Engine
       </footer>
     </div>
   );

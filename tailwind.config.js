@@ -11,15 +11,15 @@ export default {
         sans: ['Plus Jakarta Sans', 'sans-serif'],
       },
       colors: {
-        resona: {
-          bg: '#18181B',
-          card: '#27272A',
-          hover: '#3F3F46',
-          border: '#3F3F46',
-          coral: '#D97757',       // Signature warm coral
-          amber: '#F59E0B',
-          cyan: '#06B6D4',
-          emerald: '#10B981'
+        nordic: {
+          bg: '#0C131D',          // Deep Midnight Frost Navy
+          card: '#151F2C',        // Frosted Dark Slate surface
+          hover: '#1E2C3F',       // Hover state
+          border: '#222F43',      // Subtle icy border
+          aqua: '#2DD4BF',        // Soft Aquamarine / Seafoam
+          cyan: '#38BDF8',        // Sky Cyan
+          text: '#F0F9FF',        // Crisp Icy White
+          muted: '#94A3B8'
         }
       }
     },
